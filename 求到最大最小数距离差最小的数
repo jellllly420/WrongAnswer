@@ -24,6 +24,7 @@ abs(abs(x-max) - abs(x-min))。
 9
 例子输出
 5
+
 提示
 函数abs()定义在stdlib.h中。
 
