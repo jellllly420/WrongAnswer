@@ -1,0 +1,83 @@
+题目 - 括号配对	
+描述
+小凡同学在学习C语言时无意间发现括号的配对是件很有意思的事。对于不同数量的括号，似乎有很多种不同但是合法的组合方式。对于小凡给出的括号总对数N，你能告诉他总共有多少种不同的括号组合方式吗？
+关于输入
+输入有一行，为括号的总对数N，N为不超过10的正整数。
+关于输出
+按左括号优先的顺序排列出所有合法的组合方式。
+例子输入
+3
+例子输出
+((()))
+
+(()())
+
+(())()
+
+()(())
+
+()()()
+
+#include<iostream>
+#include<cstring>
+using namespace std;
+int n = 0;
+int left_left = 0;
+int right_left = 0;
+char ch[25] = { '\0' };
+int total = 0;
+bool judge(char* ch) {
+	int visited[25] = { 0 };
+	int haha = 0;
+	for (int i = 0; i < n * 2; i++) {
+		if (ch[i] == '(') {
+			for (int j = i + 1; j < 2 * n + 2; j++) {
+				if ((!visited[j]) && ch[j] == ')') {
+					haha++;
+					visited[j]++;
+					break;
+				}
+			}
+		}
+	}
+	if (haha == n) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+void process(int n) {
+	if (strlen(ch) == n * 2) {
+		if (judge(ch)) {
+			cout << ch << endl;
+		}
+		return;
+	}
+	if (left_left > 0) {
+		ch[total] = '(';
+		total++;
+		left_left--;
+		process(n);
+		left_left++;
+		ch[total] = '\0';
+		total--;
+	}
+	if (right_left > 0) {
+		ch[total] = ')';
+		total++;
+		right_left--;
+		process(n);
+		right_left++;
+		ch[total] = '\0';
+		total--;
+	}
+	return;
+}
+int main() {
+	cin >> n;
+	left_left = n;
+	right_left = n;
+	process(n);
+	return 0;
+}
