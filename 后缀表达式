@@ -15,7 +15,7 @@
 输出 #1复制
 16
 说明/提示
-字符串长度，1000内。
+字符串长度，1000内。 
 
 #include<iostream>
 using namespace std;
