@@ -1,0 +1,70 @@
+题目描述
+一个长度为 l(3\le l\le255)l(3≤l≤255) 的字符串中被反复贴有 boy 和 girl 两单词，后贴上的可能覆盖已贴上的单词（没有被覆盖的用句点表示），最终每个单词至少有一个字符没有被覆盖。问贴有几个 boy 几个 girl？
+
+输入格式
+一行被被反复贴有boy和girl两单词的字符串。
+
+输出格式
+两行，两个整数。第一行为boy的个数，第二行为girl的个数。
+
+输入输出样例
+输入 #1复制
+......boyogirlyy......girl.......
+输出 #1复制
+4
+2
+
+#include<iostream>
+#include<cstring>
+using namespace std;
+int main() {
+	char ch[300] = { '\0' };
+	cin >> ch;
+	int len = strlen(ch);
+	int boy = 0;
+	int girl = 0;
+	for (int i = 0; i < len; i++) {
+		if (ch[i] == 'b') {
+			boy++;
+		}
+		if (ch[i] == 'o' && ch[i - 1] != 'b') {
+			boy++;
+		}
+		if (ch[i] == 'y' && ch[i - 1] != 'o') {
+			boy++;
+		}
+		if (ch[i] == 'g') {
+			girl++;
+		}
+		if (ch[i] == 'i' && ch[i - 1] != 'g') {
+			girl++;
+		}
+		if (ch[i] == 'r' && ch[i - 1] != 'i') {
+			girl++;
+		}
+		if (ch[i] == 'l' && ch[i - 1] != 'r') {
+			girl++;
+		}
+	}
+	cout << boy << endl << girl << endl;
+	return 0;
+}
+
+
+#include<bits/stdc++.h>//c++万能头文件 
+using namespace std;//命名空间~ 
+int main() {//主函数 
+	int boy=0,girl=0;//boy和girl用来记下各自的个数 
+	string st;//定义题目给出的字符串 
+	cin>>st;//这个我们校长都能看得懂的输入~ 
+	for(int i=0;i<=st.length();i++){//开始发挥计算机的强大功能！
+//st.length()为读取字符串长度的函数，c++中最好用string头文件，这里我就直接用万能头文件了~ 
+		if (st[i]=='b'||st[i+1]=='o'||st[i+2]=='y')//判断连着的三个字母是否为b、o、y 
+			boy++;//boy计数器加一 
+		if (st[i]=='g'||st[i+1]=='i'||st[i+2]=='r'||st[i+3]=='l')//判断连着的三个字母是否为g、i、r、l 
+			girl++;//girl计数器加一 
+	}
+	cout<<boy<<endl;//输出boy的个数  换行~ 
+	cout<<girl<<endl;//输出girl的个数 
+	return 0;//愉快地结束程序~~~~ 
+}
