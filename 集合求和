@@ -1,0 +1,34 @@
+题目描述
+给定一个集合s（集合元素数量<=30），求出此集合所有子集元素之和。
+
+输入格式
+集合中的元素（元素<=1000）
+
+输出格式
+和
+
+输入输出样例
+输入 #1复制
+2 3
+输出 #1复制
+10
+说明/提示
+子集为：
+
+[] [2] [3] [2 3] 2+3+2+3=10
+
+保证结果在10^18以内。
+
+#include<iostream>
+using namespace std;
+int main() {
+	int num = 0;
+	long long int sum = 0;
+	int bei = 0;
+	while (cin >> num) {
+		sum += num;
+		bei *= 2;
+	}
+	cout << (long long int)(sum * bei / 2) << endl;
+	return 0;
+}
