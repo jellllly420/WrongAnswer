@@ -11,3 +11,6 @@ ShitHappens[doge]
 # 玩具谜题
 · 移动num[i]时可以整体移动num[i]后判断边界，不必移动num[i]次+判断num[i]次（or TLE）  
 · 引用代码运用异或运算
+# A+B problem
+· 为进位方便建议将字符数组存至数字数组中（内附代码）  
+· 高精度
