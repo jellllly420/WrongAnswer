@@ -1,0 +1,96 @@
+题目描述
+用高精度计算出 S = 1! + 2! + 3! + ⋯ +n!（n≤50）。
+
+其中“!”表示阶乘，例如：5!=5×4×3×2×1。
+
+输入格式
+一个正整数 n。
+
+输出格式
+一个正整数 S，表示计算结果。
+
+输入输出样例
+输入 #1复制
+3
+输出 #1复制
+9
+说明/提示
+【数据范围】
+
+对于 100% 的数据，1≤n≤50。
+
+#include<iostream>
+using namespace std;
+int num[100][100] = { 0 };
+void pluss(int* arr, int* temp) {
+	for (int i = 0; i < 99; i++) {
+		arr[i] += temp[i];
+		if (arr[i] >= 10) {
+			arr[i + 1] += 1;
+			arr[i] %= 10;
+		}
+	}
+}
+void muti(int i) {
+	int len = 0;
+	for (int j = 99; j >= 0; j--) {
+		if (num[i - 1][j] != 0) {
+			len = j + 1;
+			break;
+		}
+	}
+	if (i < 10) {
+		for (int j = 0; j < len; j++) {
+			num[i][j] += (i * num[i - 1][j]);
+			num[i][j + 1] += (num[i][j] / 10);
+			num[i][j] %= 10;
+		}
+	}
+	else {
+		int temp1[100] = { 0 };
+		int temp2[100] = { 0 };
+		for (int j = 0; j < len; j++) {
+			temp1[j] += (i%10) * num[i - 1][j];
+			temp1[j+1] += (temp1[j] / 10);
+			temp1[j] %= 10;
+		}
+		temp2[0] = 0;
+		for (int j = 1; j < len + 1; j++) {
+			temp2[j] += (i / 10) * num[i - 1][j-1];
+			temp2[j + 1] += (temp2[j] / 10);
+			temp2[j] %= 10;
+		}
+		pluss(num[i], temp1);
+		pluss(num[i], temp2);
+	}
+}
+int main() {
+	int n = 0;
+	cin >> n;
+	num[1][0] = 1;
+	for (int i = 2; i <= n; i++) {
+		muti(i);
+	}
+	int arr[100] = { 0 };
+	for (int i = 1; i <= n; i++) {
+		for (int j = 0; j < 100; j++) {
+			arr[j] += num[i][j];
+			if (arr[j] >= 10) {
+				arr[j + 1]+=(arr[j]/10);
+				arr[j] %= 10;
+			}
+		}
+	}
+	int ans = 0;
+	for (int i = 99; i >= 0; i--) {
+		if (arr[i] != 0) {
+			ans = i;
+			break;
+		}
+	}
+	for (int i = ans; i >= 0; i--) {
+		cout << arr[i];
+	}
+	cout << endl;
+	return 0;
+}
