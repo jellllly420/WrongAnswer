@@ -1,0 +1,59 @@
+题目描述
+利用快速排序算法将读入的 N 个数从小到大排序后输出。
+
+快速排序是信息学竞赛的必备算法之一。对于快速排序不是很了解的同学可以自行上网查询相关资料，掌握后独立完成。（C++ 选手请不要试图使用 STL，虽然你可以使用 sort 一遍过，但是你并没有掌握快速排序算法的精髓。）
+
+输入格式
+第 1 行为一个正整数 N，第 2 行包含 N 个空格隔开的正整数 a_i，为你需要进行排序的数，数据保证了 A_i不超过 10^9。
+
+输出格式
+将给定的 N 个数从小到大输出，数之间空格隔开，行末换行且无空格。
+
+输入输出样例
+输入 #1复制
+5
+4 2 4 5 1
+输出 #1复制
+1 2 4 4 5
+
+
+#include<iostream>
+#include<algorithm>
+using namespace std;
+void qsort(int* arr, int l, int r) {
+	int i = l, j = r;
+	int key = arr[(i + j) / 2];
+	while (i < j) {
+		while (arr[i] < key) {
+			i++;
+		}
+		while (arr[j] > key) {
+			j--;
+		}
+		if (i <= j) {
+			swap(arr[i], arr[j]);
+			i++;
+			j--;
+		}
+	}
+	if (l < j) {
+		qsort(arr, l, j);
+	}
+	if (i < r) {
+		qsort(arr, i, r);
+	}
+}
+int main() {
+	int n = 0;
+	cin >> n;
+	int* arr = new int[n];
+	for (int i = 0; i < n; i++) {
+		cin >> arr[i];
+	}
+	qsort(arr, 0, n - 1);
+	for (int i = 0; i < n - 1; i++) {
+		cout << arr[i] << " ";
+	}
+	cout << arr[n - 1] << endl;
+	return 0;
+}
