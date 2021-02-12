@@ -30,6 +30,13 @@ farmer.x + farmer.y * 10 + cow.x * 100 + cow.y * 1000 + farmer.facing * 10000 + 
 可以用bool数组来实现以O(1)的复杂度来查询该值是否已经出现。  
 ——beacon_cwk from www.luogu.com.cn/problem/solution/P1518
 # 快速排序
-· 拒绝stl（x  
 · 在[l,r]区间上选择参考点key（内附代码即取中间点），将比key大的移至key右侧，比key小的移至左侧，再对左右两侧递归调用qsort函数    
-· key取中间点时两侧元素数量一致，移动元素时可采用交换的操作（但细节问题很烦）
+· key取中间点时两侧元素数量一致，移动元素时可采用交换的操作（但细节问题很烦）  
+· 拒绝stl（x  
+> sort(arr,arr+len,(cmp)) (#include<algorithm>)  
+将两地址间的数组元素进行排序
+# 求第k小的数
+· 一次快排后将数组分为三个区块，分别是[0 , j]和[j , i]和[i , n - 1],（分治）在快排函数中判断本次快排后k所位于的区间，若为两侧区间则可以只递归对应区间，若为中间区间则可直接输出（前提是采取“快速排序”中的qsort函数）    
+· 拒绝stl（x    
+> nth_element(a+x,a+x+y,a+x+len,(cmp))    
+执行之后数组a下标x到x+y−1的元素都小于a[x+y]，下标 x+y+1到 x+len-1的元素都大于a[x+y]，但不保证数组有序。此时a[x+y] 就是数组区间x到x+len−1中第y小的数，当然也可以自己定义cmp函数。
