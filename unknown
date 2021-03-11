@@ -1,0 +1,62 @@
+描述
+对于一个2行N列的走道。现在用1*2,2*2的砖去铺满。问有多少种不同的方式。
+
+下图是一个2行17列的走道的某种铺法。
+
+
+
+
+
+输入
+整个测试有多组数据，请做到文件底结束。每行给出一个数字N，0 <= n <= 250
+
+输出
+如题
+
+样例输入
+2
+8
+12
+100
+200
+样例输出
+3
+171
+2731
+845100400152152934331135470251
+1071292029505993517027974728227441735014801995855195223534251
+
+
+#include<iostream>
+using namespace std;
+int result[255][301] = {0};
+int main(){
+    int n = 0;
+    result[0][300] = 1;
+    result[1][300] = 1;
+    result[2][300] = 3;
+    for (int i = 3; i <= 250; i++){
+        for (int j = 300; j >= 1; j--){
+            result[i][j] += result[i - 1][j] + 2 * result[i - 2][j];
+            result[i][j - 1] += result[i][j] / 10;
+            result[i][j] %= 10;
+            if(result[i][j-1]>=10){
+                result[i][j - 2] ++;
+                result[i][j - 1] -= 10;
+            }
+        }
+    }
+    while(cin>>n){
+        int k = 0;
+        while(result[n][k]==0){
+            k++;
+        }
+        for (int i = k; i <= 300;i++){
+            cout << result[n][i];
+        }
+        cout << endl;
+    }
+    return 0;
+}
+
+
