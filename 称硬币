@@ -1,0 +1,86 @@
+有12枚硬币。其中有11枚真币和1枚假币
+假币和真币重量不同，但不知道假币比真币轻还是重。现在，用一架天平称了这些币三次，告诉你称的结果，请你找出假币并且确定假币是轻是重（数据保证一定能找出来）
+
+输 入
+第一行是测试数据组数
+每组数据有三行, 每行表示一次称量的结果
+银币标号为A-L
+每次称量的结果用三个以空格隔开的字符串表示:
+天平左边放置的硬币 天平右边放置的硬币 平衡状态
+其中平衡状态用 “up”, “down” 或 “even” 表示,
+分别为右端高、右端低和平衡。天平左右的硬币数总是相等的
+
+输 出
+输出哪一个标号的银币是假币, 并说明它比真币轻还是重
+
+输入样例
+1 
+ABCD EFGH even 
+ABCI EFJK up 
+ABIJ EFGH even 
+
+输出样例
+K is the counterfeit coin and it is light. 
+
+#include<iostream>
+#include<cstring>
+using namespace std;
+char Left[3][7];
+char Right[3][7];
+char result[3][5];
+bool judge(char ch,bool light){
+	char * logical_left;
+	char * logical_right;
+	for(int i=0;i<3;i++){
+		if(light){
+			logical_left=Left[i];
+			logical_right=Right[i];
+		}
+		else{
+			logical_left=Right[i];
+			logical_right=Left[i];
+		}
+		switch(result[i][0]){
+			case 'u':{
+				if(strchr(logical_right,ch)==NULL){
+					return false;
+				}
+				break;
+			}
+			case 'e':{
+				if(strchr(logical_right,ch)||strchr(logical_left,ch)){
+					return false;
+				}
+				break;
+			}
+			case 'd':{
+				if(strchr(logical_left,ch)==NULL){
+					return false;
+				}
+				break;
+			}
+			default:break;
+		}
+	}
+	return true;
+}
+int main(){
+	int t=0;
+	cin>>t;
+	while(t--){
+		for(int i=0;i<3;i++){
+			cin>>Left[i]>>Right[i]>>result[i];
+		}
+		for(char i='A';i<='L';i++){
+			if(judge(i,1)){
+				cout << i << " is the counterfeit coin and it is light."<<endl;
+				break;
+			}
+			else if(judge(i,0)){
+				cout << i << " is the counterfeit coin and it is heavy."<<endl;
+				break;
+			}
+		}
+	}
+	return 0;
+}
