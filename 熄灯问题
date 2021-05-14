@@ -1,0 +1,145 @@
+问题描述
+有一个由按钮组成的矩阵, 其中每行有6个按钮, 共5行。每个按钮的位置上有一盏灯。当按下一个按钮后, 该按钮以及周围位置(上边, 下边, 左边, 右边)的灯都会改变一次
+如果灯原来是点亮的, 就会被熄灭。如果灯原来是熄灭的, 则会被点亮。在矩阵角上的按钮改变3盏灯的状态。在矩阵边上的按钮改变4盏灯的状态。其他的按钮改变5盏灯的状态
+对矩阵中的每盏灯设置一个初始状态
+请你写一个程序, 确定需要按下哪些按钮, 恰好使得所有的灯都熄灭
+
+输入:
+第一行是一个正整数N, 表示需要解决的案例数。每个案例由5行组成, 每一行包括6个数字。这些数字以空格隔开, 可以是0或1。0 表示灯的初始状态是熄灭的。1 表示灯的初始状态是点亮的
+
+输出:
+对每个案例, 首先输出一行, 输出字符串 “PUZZLE #m”, 其中m是该案例的序号，接着按照该案例的输入格式输出5行，1 表示需要把对应的按钮按下，0 表示不需要按对应的按钮，每个数字以一个空格隔开
+
+样例输入
+2 
+0 1 1 0 1 0
+1 0 0 1 1 1 
+0 0 1 0 0 1 
+1 0 0 1 0 1 
+0 1 1 1 0 0 
+0 0 1 0 1 0 
+1 0 1 0 1 1 
+0 0 1 0 1 1 
+1 0 1 1 0 0 
+0 1 0 1 0 0 
+
+样例输出
+PUZZLE #1 
+1 0 1 0 0 1 
+1 1 0 1 0 1 
+0 0 1 0 1 1 
+1 0 0 1 0 0 
+0 1 0 0 0 0
+PUZZLE #2 
+1 0 0 1 1 1 
+1 1 0 0 0 0 
+0 0 0 1 0 0 
+1 1 0 1 0 1 
+1 0 1 1 0 1 
+
+#include<iostream>
+using namespace std;
+int n;
+int init[5][6];
+int press[5][6];
+int temp[5][6];
+bool judge(){
+	for(int i=1;i<5;i++){
+		for(int j=0;j<6;j++){
+			press[i][j]=0;
+		}
+	}
+	for(int i=0;i<5;i++){
+		for(int j=0;j<6;j++){
+			temp[i][j]=init[i][j];
+		}
+	}
+	if(press[0][0]){
+		temp[0][0]^=1;
+		temp[0][1]^=1;
+		temp[1][0]^=1;
+	}
+	if(press[0][5]){
+		temp[0][5]^=1;
+		temp[0][4]^=1;
+		temp[1][5]^=1;
+	}
+	for(int i=1;i<=4;i++){
+		if(press[0][i]){
+			temp[0][i]^=1;
+			temp[0][i-1]^=1;
+			temp[0][i+1]^=1;
+			temp[1][i]^=1;
+		}
+	}
+	int row=0;
+	while(row<5){
+		row++;
+		if(temp[row-1][0]){
+			press[row][0]=1;
+			temp[row][0]^=1;
+			temp[row][1]^=1;
+			temp[row+1][0]^=1;
+		}
+		if(temp[row-1][5]){
+			press[row][5]=1;
+			temp[row][5]^=1;
+			temp[row][4]^=1;
+			temp[row+1][5]^=1;
+		}
+		for(int i=1;i<=4;i++){
+			if(temp[row-1][i]){
+				press[row][i]=1;
+				temp[row][i]^=1;
+				temp[row][i-1]^=1;
+				temp[row][i+1]^=1;
+				temp[row+1][i]^=1;
+			}
+		}
+	}
+	for(int i=0;i<6;i++){
+		if(temp[4][i]){
+			return false;
+		}
+	}
+	return true;
+}
+int main(){
+	cin>>n;
+	for(int t=1;t<=n;t++){
+		for(int i=0;i<5;i++){
+			for(int j=0;j<6;j++){
+				cin>>init[i][j];
+			}
+		}
+		for(int a=0;a<=1;a++){
+			for(int b=0;b<=1;b++){
+				for(int c=0;c<=1;c++){
+					for(int d=0;d<=1;d++){
+						for(int e=0;e<=1;e++){
+							for(int f=0;f<=1;f++){
+								press[0][0]=a;
+								press[0][1]=b;
+								press[0][2]=c;
+								press[0][3]=d;
+								press[0][4]=e;
+								press[0][5]=f;
+								if(judge()){
+									cout<<"PUZZLE #"<<t<<endl;
+									for(int i=0;i<5;i++){
+										for(int j=0;j<5;j++){
+											cout<<press[i][j]<<" ";
+										}
+										cout<<press[i][5]<<endl;
+									}
+									break;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	return 0;
+}
