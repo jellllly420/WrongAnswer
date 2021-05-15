@@ -1,0 +1,169 @@
+有9个时钟，排成一个3*3的矩阵。
+
+|-------|    |-------|    |-------|
+|       |    |       |    |   |   |
+|---O   |    |---O   |    |   O   |
+|       |    |       |    |       |
+|-------|    |-------|    |-------|
+    A            B            C    
+
+|-------|    |-------|    |-------|
+|       |    |       |    |       |
+|   O   |    |   O   |    |   O   |
+|   |   |    |   |   |    |   |   |
+|-------|    |-------|    |-------|
+    D            E            F    
+
+|-------|    |-------|    |-------|
+|       |    |       |    |       |
+|   O   |    |   O---|    |   O   |
+|   |   |    |       |    |   |   |
+|-------|    |-------|    |-------|
+    G            H            I    
+(图 1)
+现在需要用最少的移动，将9个时钟的指针都拨到12点的位置。共允许有9种不同的移动。如下表所示，每个移动会将若干个时钟的指针沿顺时针方向拨动90度。
+
+
+
+移动    影响的时钟
+ 
+ 1         ABDE
+ 2         ABC
+ 3         BCEF
+ 4         ADG
+ 5         BDEFH
+ 6         CFI
+ 7         DEGH
+ 8         GHI
+ 9         EFHI    
+输入
+9个整数，表示各时钟指针的起始位置，相邻两个整数之间用单个空格隔开。其中，0=12点、1=3点、2=6点、3=9点。
+输出
+输出一个最短的移动序列，使得9个时钟的指针都指向12点。按照移动的序号从小到大输出结果。相邻两个整数之间用单个空格隔开。
+样例输入
+3 3 0 
+2 2 2 
+2 1 2 
+样例输出
+4 5 8 9 
+
+#include<iostream>
+using namespace std;
+void op(int & x){
+	x++;
+	x%=4;
+}
+int final_ans[9]={0};
+int min_len=10000;
+int get_sum(int* array){
+	int ans=0;
+	for(int i=0;i<9;i++){
+		ans+=array[i];
+	}
+	return ans;
+}
+int main(){
+	int mat[3][3]={0};
+	for(int i=0;i<3;i++){
+		for(int j=0;j<3;j++){
+			cin>>mat[i][j];
+		}
+	}
+	for(int a=0;a<=3;a++){
+		for(int b=0;b<=3;b++){
+			for(int c=0;c<=3;c++){
+				int ans[9]={0};
+				ans[0]=a;
+				ans[1]=b;
+				ans[2]=c;
+				int temp[3][3]={0};
+				for(int i=0;i<3;i++){
+					for(int j=0;j<3;j++){
+						temp[i][j]=mat[i][j];
+					}
+				}
+				for(int i=0;i<a;i++){
+					op(temp[0][0]);
+					op(temp[0][1]);
+					op(temp[1][0]);
+					op(temp[1][1]);
+				}
+				for(int i=0;i<b;i++){
+					op(temp[0][0]);
+					op(temp[0][1]);
+					op(temp[0][2]);
+				}
+				for(int i=0;i<c;i++){
+					op(temp[0][1]);
+					op(temp[0][2]);
+					op(temp[1][1]);
+					op(temp[1][2]);
+				}
+				ans[3]=(4-temp[0][0])%4;
+				for(int i=0;i<ans[3];i++){
+					op(temp[0][0]);
+					op(temp[1][0]);
+					op(temp[2][0]);
+				}
+				ans[4]=(4-temp[0][1])%4;
+				for(int i=0;i<ans[4];i++){
+					op(temp[0][1]);
+					op(temp[1][0]);
+					op(temp[1][1]);
+					op(temp[1][2]);
+					op(temp[2][1]);
+				}
+				ans[5]=(4-temp[0][2])%4;
+				for(int i=0;i<ans[5];i++){
+					op(temp[0][2]);
+					op(temp[1][2]);
+					op(temp[2][2]);
+				}
+				ans[6]=(4-temp[1][0])%4;
+				for(int i=0;i<ans[6];i++){
+					op(temp[1][0]);
+					op(temp[1][1]);
+					op(temp[2][0]);
+					op(temp[2][1]);
+				}
+				if(temp[1][2]!=temp[1][1]){
+					continue;
+				}
+				ans[8]=(4-temp[1][1])%4;
+				for(int i=0;i<ans[8];i++){
+					op(temp[1][1]);
+					op(temp[1][2]);
+					op(temp[2][1]);
+					op(temp[2][2]);
+				}
+				if(temp[2][0]!=temp[2][1]||temp[2][1]!=temp[2][2]||temp[2][0]!=temp[2][2]){
+					continue;
+				}
+				ans[7]=(4-temp[2][0])%4;
+				if(get_sum(ans)<min_len){
+					min_len=get_sum(ans);
+					for(int i=0;i<9;i++){
+						final_ans[i]=ans[i];
+					}
+				}
+			}
+		}
+	}
+	int last=0;
+	for(int i=8;i>=0;i--){
+		if(final_ans[i]!=0){
+			last=i;
+			break;
+		}
+	}
+	for(int i=0;i<last;i++){
+		for(int j=0;j<final_ans[i];j++){
+			cout<<i+1<<" ";
+		}
+	}
+	for(int i=0;i<final_ans[last]-1;i++){
+		cout<<last+1<<" ";
+	}
+	cout<<last+1<<endl;
+	return 0;
+}
